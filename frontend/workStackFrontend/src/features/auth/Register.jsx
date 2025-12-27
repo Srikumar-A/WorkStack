@@ -9,7 +9,7 @@ function Register(){
         username:"",
         email:"",
         password:"",
-        repeat_password:"",
+        password2:"",
     });
     const handleChange=(e)=>{
         setForm({...form,[e.target.name]:e.target.value})
@@ -67,9 +67,9 @@ function Register(){
             </div>
             <input
             type="password"
-            name="repeat_password"
+            name="password2"
             placeholder="re-enter password"
-            value={form.repeat_password}
+            value={form.password2}
             onChange={handleChange}
             />
             <button type="submit" onClick={handleSubmit}>Register</button>

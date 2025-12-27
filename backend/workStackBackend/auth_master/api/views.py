@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .serializers import RegisterSerializer,LoginSerializer
 from rest_framework.response import Response
 from rest_framework import generics,status
-from django.contrib.auth.models import User
+from ..models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import api_view

@@ -27,10 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL="auth_master.User"
 # Application definition
 
 INSTALLED_APPS = [
+    "auth_master",
     "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -38,9 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "auth_master",
     "rest_framework.authtoken",
     "corsheaders",
+    "organization",
+    "projects",
+    "quests",
+    "teams",
 ]
 
 MIDDLEWARE = [
@@ -130,3 +134,4 @@ CORS_ALLOWED_ORIGINS=[
     "http://localhost:5173",
 ]
 CORS_ALLOW_CREDENTIALS=True
+
