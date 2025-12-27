@@ -1,0 +1,19 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #121212 !important; /* dark grey / black */
+  color: #e5e7eb;           /* light text */
+}
+.form-card {
+  background-color: #1f2933;
+  color: #e5e7eb;
+}
+.form-card input {
+  background-color: #111827;
+  color: #e5e7eb;
+  border: 1px solid #374151;
+}
+
+.form-card input::placeholder {
+  color: #9ca3af;
+}
