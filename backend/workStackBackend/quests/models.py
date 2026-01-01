@@ -21,6 +21,11 @@ class Quest(models.Model):
         related_name="quests"
 
     )
+    organization=models.ForeignKey(
+        "organization.organization",
+        on_delete=models.CASCADE,
+        related_name="quests"
+    )
     assigned_to=models.ForeignKey(
         "auth_master.User",
         on_delete=models.SET_NULL,

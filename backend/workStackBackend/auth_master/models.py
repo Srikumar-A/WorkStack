@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import AbstractUser
+from teams.models import teams
 
 # Create your models here.
 
@@ -19,6 +20,12 @@ class User(AbstractUser):
                                      null=True, 
                                      blank=True, 
                                      related_name='users')
+    teams=models.ManyToManyField(
+        teams,
+        through='teams.team_members',
+        related_name='users'
+
+    )
     
     def __str__(self):
         return self.username

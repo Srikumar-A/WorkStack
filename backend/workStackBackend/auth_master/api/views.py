@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import RegisterSerializer,LoginSerializer
+from .serializers import RegisterSerializer,LoginSerializer,UserSerializer
 from rest_framework.response import Response
 from rest_framework import generics,status
 from ..models import User
@@ -8,6 +8,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 class RegisterView(generics.CreateAPIView):
@@ -47,6 +48,34 @@ class LoginView(APIView):
         else:
             raise ValidationError('Bad Request',status.HTTP_400_BAD_REQUEST)
         return Response({'token':token.key},status=status.HTTP_200_OK)
+    
+
+class UserView(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        serializer=UserSerializer(request.user)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+    def patch(self,request):
+        print(request.data)
+        print(request.user)
+        user=request.user
+        serializer=UserSerializer(
+            instance=user,
+            data=request.data,
+            partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+
+class TestView(APIView):
+    def get(self,request):
+        users=User.objects.all()
+        serializer=UserSerializer(users,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
     
 
 @api_view(['POST'])
