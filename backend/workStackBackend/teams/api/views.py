@@ -101,4 +101,5 @@ class UpdateTeamMemberView(APIView):
                                     status=status.HTTP_400_BAD_REQUEST)
                 
             membership.delete()
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"message":"Successfully deleted."},status=status.HTTP_204_NO_CONTENT)
+        return Response({"message":f"Lead{is_team_lead(request.user,team)}"},status=status.HTTP_401_UNAUTHORIZED)

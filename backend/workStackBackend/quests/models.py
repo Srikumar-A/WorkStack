@@ -18,13 +18,16 @@ class Quest(models.Model):
     team=models.ForeignKey(
         "teams.teams",
         on_delete=models.CASCADE,
-        related_name="quests"
-
+        related_name="quests",
+        null=True,
+        blank=True
     )
     organization=models.ForeignKey(
         "organization.organization",
         on_delete=models.CASCADE,
-        related_name="quests"
+        related_name="quests",
+        null=True,
+        blank=True
     )
     assigned_to=models.ForeignKey(
         "auth_master.User",
@@ -43,6 +46,8 @@ class Quest(models.Model):
     deadline=models.DateField(null=True, blank=True)
     updated_at=models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.title
     class Meta:
         indexes=[
             models.Index(fields=['team','status']),
