@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
+from organization.models import organization
 # Create your views here.
 
 class RegisterView(generics.CreateAPIView):
@@ -73,6 +74,14 @@ class UserView(APIView):
 class TestView(APIView):
     def get(self,request):
         users=User.objects.all()
+        serializer=UserSerializer(users,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+class UserOfOrgView(APIView):
+    permission_classes=[IsAuthenticated,]
+    def get(self,request,org_id):
+        users=User.objects.filter(
+            organization=org_id
+        )
         serializer=UserSerializer(users,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 

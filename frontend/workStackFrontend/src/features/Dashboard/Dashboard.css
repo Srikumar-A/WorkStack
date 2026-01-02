@@ -1,0 +1,117 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  background: #121212;
+  justify-content: center;
+}
+
+/* MAIN CONTAINER */
+.dashboard {
+  width: 95vw;
+  height: 100vh;
+  padding-top:10vh;
+  padding-left: 5vw;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* TOP ROW */
+.dashboard-top {
+  display: flex;
+  background: #121212;
+  height: 50vh;
+  border-radius: 10px;
+  overflow: hidden;
+  border-color: #e5e7eb;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* PANELS */
+.panel {
+  flex: 1;
+  padding: 20px;
+  
+}
+
+.panel:last-child {
+  border-right: none;
+}
+
+.panel h3 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  color: #e5e7eb;
+}
+
+.panel ul {
+  height: 300px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.panel li {
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #1e1e1e;
+  border-left: 4px solid #4a90e2;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+
+/* ACTIVITY SECTION */
+.activity-section {
+  background: #121212;
+  padding: 5%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.activity-section h3 {
+  margin-bottom: 12px;
+}
+
+/* GITHUB-LIKE GRID */
+.activity-grid { 
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 20px);
+  gap: 6px;
+}
+
+/* DAY CELLS */
+.day {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: #ebedf0;
+}
+
+/* INTENSITY */
+.level-0 { background: #ebedf0; }
+.level-1 { background: #c6e48b; }
+.level-2 { background: #7bc96f; }
+.level-3 { background: #239a3b; }
+.level-4 { background: #196127; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .dashboard-top {
+    flex-direction: column;
+  }
+
+  .panel {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .panel:last-child {
+    border-bottom: none;
+  }
+}

@@ -45,6 +45,7 @@ class Quest(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     deadline=models.DateField(null=True, blank=True)
     updated_at=models.DateTimeField(auto_now=True)
+    start_date=models.DateField(auto_now=True)
 
     def __str__(self):
         return self.title

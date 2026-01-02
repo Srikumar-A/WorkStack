@@ -62,3 +62,24 @@ class QuestUserView(APIView):
         )
         serializer=QuestSerializer(quests,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+class QuestUserAssignedView(APIView):
+    permission_classes=[IsAuthenticated,]
+    def get(self,request):
+        user=request.user
+        quests=Quest.objects.filter(
+            created_by=user
+        )
+        serializer=QuestSerializer(quests,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+
+class QuestProjectView(APIView):
+    permission_classes=[IsAuthenticated,]
+    def get(self,request,pk):
+        project=Project.objects.get(pk=pk)
+        quests=Quest.objects.filter(
+            project=project
+        )
+        serializer=QuestSerializer(quests,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)

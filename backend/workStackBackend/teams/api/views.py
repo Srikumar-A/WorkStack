@@ -5,8 +5,11 @@ from rest_framework.response import Response
 from ..models import teams,team_members
 from .serializers import (TeamSerializer,CreateTeamSerializer,
                           TeamMembersSerializer,TeamDetailSerializer,
-                          TeamMemberRoleUpdateSerializer)
+                          TeamMemberRoleUpdateSerializer,
+                          TeamMemberUserSerializer)
 from rest_framework.permissions import IsAuthenticated
+from organization.models import organization
+
 # Create your views here.
 class TeamView(APIView):
     permission_classes=[IsAuthenticated,]
@@ -48,7 +51,7 @@ class TeamDetailView(APIView):
         '''
         team=teams.objects.get(pk=pk)
         # check if the current user is lead or something else
-
+        print(request.data)
         #authorize the user to add users to the list
         serializer=TeamMembersSerializer(data=request.data)
         if serializer.is_valid():
@@ -103,3 +106,26 @@ class UpdateTeamMemberView(APIView):
             membership.delete()
             return Response({"message":"Successfully deleted."},status=status.HTTP_204_NO_CONTENT)
         return Response({"message":f"Lead{is_team_lead(request.user,team)}"},status=status.HTTP_401_UNAUTHORIZED)
+    
+
+class TeamFromOrganizationView(APIView):
+    permission_classes=[IsAuthenticated,]
+    def get(self,request):
+        team_=teams.objects.filter(
+            organization=request.user.organization,
+        ).distinct()
+        serializer=TeamSerializer(team_,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+class TeamMembershipUserView(APIView):
+    permission_classes=[IsAuthenticated,]
+
+    def get(self,request,team_id):
+        memberships=team_members.objects.filter(
+            team=team_id,
+            team__organization=request.user.organization
+        ).select_related("user")
+        serializer=TeamMemberUserSerializer(memberships,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
+    

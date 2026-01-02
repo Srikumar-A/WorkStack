@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from ..models import teams,team_members
+from auth_master.models import User
 
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,3 +35,14 @@ class TeamMemberRoleUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model=team_members
         fields=["role"]
+
+# sending members based on team  --> this is for teams page
+class TeamUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=["id","username","email"]
+class TeamMemberUserSerializer(serializers.ModelSerializer):
+    user=TeamUserSerializer(read_only=True)
+    class Meta:
+        model=team_members
+        fields=["id","user","role"]
