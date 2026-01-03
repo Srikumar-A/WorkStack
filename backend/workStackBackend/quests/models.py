@@ -7,7 +7,7 @@ class Quest(models.Model):
 
     STATUS=(
         ("pending","Pending"),
-        ("in_progress","In Progress"),
+        ("in_progress","In_Progress"),
         ("completed","Completed"),
     )
     project=models.ForeignKey(

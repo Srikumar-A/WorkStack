@@ -91,7 +91,7 @@ function Dashboard(){
             questAssigned.map(
                 quest=>(
                     <li key={quest.id}
-                    onClick={()=>navigate(`/quests/${quest.id}`)}>
+                    onClick={()=>navigate(`/quests/${quest.project}`)}>
                         {quest.title}</li>
                 )
             ) 

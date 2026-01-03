@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {use,useEffect,useState} from 'react';
 import apiClient from "../../services/apiClient";
 import './Projects.css'
-import GanttChart from "../../components/navbar/GanttChart/GanttChart";
+import GanttChart from "../../components/GanttChart/GanttChart";
 import { mapQuestToGanttTask } from "./mapQuestToGanttTask";
 import CreateProjectModal from "./CreateProjectModal/CreateProjectModal";
 function Projects(){
@@ -25,24 +25,35 @@ function Projects(){
         const fetchProjects=async ()=>{
             const response=await apiClient.get("projects/list/");
             setProjects(response.data);
-            setFormData(response.data);
+            //setFormData(response.data);
         }
+      fetchProjects();
+      },[])
+    useEffect(()=>{
         const fetchQuests=async ()=>{
             if(id){
               const response=await apiClient.get("quests/project-quests/"+String(id)+"/");
               setQuests(response.data);}
         }
+      fetchQuests();
+      },[id])
+    useEffect(()=>{
         const fetchUserTeam=async()=>{
             const response1=await apiClient.get("teams/org/");
             setTeams(response1.data);
         }
-        fetchProjects();
-        fetchQuests();
         fetchUserTeam();
     },[])
     const selectedProject = projects.find(
         (p) => String(p.id) === String(id)
         );
+
+    useEffect(()=>{
+      if(selectedProject){
+        setFormData(selectedProject);
+      }
+
+    },[selectedProject])
 
     const ganttTasks=quests.map(mapQuestToGanttTask).filter(Boolean);
     const pendingQuests=quests.filter(quest=>quest.status==="pending").length;
@@ -52,7 +63,6 @@ function Projects(){
     // save the project details in the backend
     const saveFunction=async()=>{
         const response=await apiClient.patch("/projects/"+String(selectedProject.id)+"/",formData);
-        console.log(response.data);
     }
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -109,7 +119,6 @@ function Projects(){
 
             <section className="gantt-wrapper">
                 <GanttChart tasks={ganttTasks}/>
-                {console.log(teams)}
             </section>
             <section className="project-section">
                 {/* Meta data immutable kind*/ }
@@ -138,7 +147,6 @@ function Projects(){
                             <label>Start date</label>
                             <input
                             type="date"
-                            defaultValue={selectedProject.start_date}
                             value={formData.start_date}
                             onChange={handleChange}
                             />
@@ -158,8 +166,8 @@ function Projects(){
                             Team
                         </label>
                         <select 
-                        defaultValue={selectedProject.team}
-                        >
+                        value={formData.team}
+                        ><option value={0} key={0}>NA</option>
                             {teams.map(team=>(<option value={team.id} key={team.id}>{team.team_name}</option>))}
                         </select>
                     </div>
@@ -184,7 +192,7 @@ function Projects(){
         </div>
 
         <div className="metric-card">
-          <span className="metric-value">{quests.length===0?0:(completedQuests/quests.length)}%</span>
+          <span className="metric-value">{quests.length===0?0:(completedQuests/quests.length)*100}%</span>
           <span className="metric-label">Progress</span>
         </div>
         <div className="metric-card">
@@ -197,7 +205,7 @@ function Projects(){
           <h4>Recent Quests</h4>
           <ul>
             {quests.map(quest=>
-                (<li key={quest.id}>{quest.title}</li>)
+                (<li key={quest.id} onClick={()=>navigate(`/quests/${selectedProject.id}`)} style={{cursor:"pointer"}}>{quest.title}</li>)
             )}
           </ul>
         </section>

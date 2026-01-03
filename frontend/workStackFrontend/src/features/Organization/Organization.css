@@ -1,0 +1,107 @@
+/* ===== Main Wrapper ===== */
+.organization-window {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr; /* details | members */
+  gap: 10px;
+  padding: 20px;
+  height: 85vh;
+  background-color: #121212;
+  margin-top:10vh ;
+  margin-left: 6vw;
+  width:87vw;
+}
+
+/* ===== Shared Window Styling ===== */
+.detail-window{
+  background-color: #282828;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  width: 25vw;
+}
+.member-window {
+  background-color: #282828;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  width:55vw;
+}
+
+/* ===== Section Headers ===== */
+.member-header {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: white;
+  padding-bottom: 8px;
+}
+
+/* ===== Organization Detail List ===== */
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Individual key-value row */
+.item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  gap: 3rem;
+  padding: 20px;
+}
+
+/* Labels */
+.item .label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: white;
+  text-transform: uppercase;
+}
+
+/* Values */
+.item .value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: white;
+  word-break: break-word;
+}
+
+/* ===== Members Window ===== */
+.member-window {
+  overflow-y: auto;
+}
+
+/* Optional: grid for member cards */
+.member-window .members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ===== Scrollbar polish (optional) ===== */
+.member-window::-webkit-scrollbar {
+  width: 6px;
+}
+
+.member-window::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
+
+.member-window::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.edit-btn{
+    width: 50%;
+    margin-top: 4rem;
+    margin-left: 5rem;
+}

@@ -1,10 +1,11 @@
 import NavigationBar from "../../components/navbar/Navbar";
-
-
 import { useEffect, useState } from "react";
 import "./Quests.css";
+import apiClient from "../../services/apiClient";
+import {useParams} from "react-router-dom";
 
 export default function Quests() {
+  const {id}=useParams();
   const [quests, setQuests] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedQuest, setSelectedQuest] = useState(null);
@@ -12,26 +13,11 @@ export default function Quests() {
 
   /* Mock data – replace with API */
   useEffect(() => {
-    setQuests([
-      {
-        id: 1,
-        title: "Design DB schema",
-        description: "Finalize ER diagram",
-        status: "open",
-        start_date: "2026-01-01",
-        end_date: "2026-01-05",
-        assignee: "Alice"
-      },
-      {
-        id: 2,
-        title: "Auth API",
-        description: "JWT + refresh tokens",
-        status: "in_progress",
-        start_date: "2026-01-02",
-        end_date: "2026-01-10",
-        assignee: "Bob"
-      }
-    ]);
+    const fetchQuests=async()=>{
+      const response=await apiClient.get(`quests/project-quests/${id}/`);
+      setQuests(response.data);
+    }
+    fetchQuests();
   }, []);
 
   const filteredQuests = quests.filter(q =>
@@ -48,10 +34,9 @@ export default function Quests() {
       id: null,
       title: "",
       description: "",
-      status: "open",
+      status: "pending",
       start_date: "",
-      end_date: "",
-      assignee: ""
+      deadline: "",
     });
     setEditing(true);
   };
@@ -62,19 +47,17 @@ export default function Quests() {
       [e.target.name]: e.target.value
     });
   };
-
+  const saveNewQuest=async()=>{
+    const response=await apiClient.post(`quests/${id}/`,selectedQuest);
+  }
+  const EditQuest=async()=>{
+    const response=await apiClient.patch(`quests/quest-detail/${selectedQuest.id}/`,selectedQuest)
+  }
   const handleSave = () => {
     if (selectedQuest.id) {
-      setQuests(
-        quests.map(q =>
-          q.id === selectedQuest.id ? selectedQuest : q
-        )
-      );
+      EditQuest();
     } else {
-      setQuests([
-        ...quests,
-        { ...selectedQuest, id: Date.now() }
-      ]);
+      saveNewQuest();
     }
     setEditing(false);
   };
@@ -171,8 +154,8 @@ export default function Quests() {
                   <label>End Date</label>
                   <input
                     type="date"
-                    name="end_date"
-                    value={selectedQuest.end_date}
+                    name="deadline"
+                    value={selectedQuest.deadline}
                     onChange={handleChange}
                     disabled={!editing}
                   />
@@ -182,9 +165,9 @@ export default function Quests() {
               <label>Assignee</label>
               <input
                 name="assignee"
-                value={selectedQuest.assignee}
+                value={selectedQuest.created_by}
                 onChange={handleChange}
-                disabled={!editing}
+                disabled={true}
               />
 
               <label>Status</label>
@@ -194,7 +177,7 @@ export default function Quests() {
                 onChange={handleChange}
                 disabled={!editing}
               >
-                <option value="open">Open</option>
+                <option value="pending">Pending</option>
                 <option value="in_progress">In Progress</option>
                 <option value="completed">Completed</option>
               </select>

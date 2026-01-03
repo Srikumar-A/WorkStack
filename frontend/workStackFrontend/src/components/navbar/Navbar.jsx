@@ -13,6 +13,7 @@ function NavigationBar(){
             <Nav.Link href="/Dashboard">Dashboard</Nav.Link>
             <Nav.Link href="/teams">Teams</Nav.Link>
             <Nav.Link href="/Account">Account</Nav.Link>
+            <Nav.Link href="/myOrg">My Org</Nav.Link>
             <Nav.Link href="/logout">Logout</Nav.Link>
             </Nav>
         </Container>

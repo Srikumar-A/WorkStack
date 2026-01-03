@@ -6,6 +6,7 @@ import AccountPage from '../features/account/accountPage.jsx';
 import Projects from '../features/Projects/Projects.jsx';
 import Quests from '../features/Quests/Quests.jsx';
 import Teams from '../features/Teams/Teams.jsx';
+import OrganizationPage from '../features/Organization/Organization.jsx';
 
 function AppRoutes(){
     return(
@@ -17,6 +18,7 @@ function AppRoutes(){
             <Route path="/projects/:id?" element={<Projects/>}/>
             <Route path="/quests/:id?" element={<Quests/>}/>
             <Route path="/teams/:id?" element={<Teams/>}/>
+            <Route path="/myOrg" element={<OrganizationPage/>}/>
         </Routes>
     );
 }

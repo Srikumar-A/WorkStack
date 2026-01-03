@@ -10,7 +10,7 @@ class organization(models.Model):
     
 # added model for membership grant, will focus on it later
 class organizationMembership(models.Model):
-    role=(
+    Role=(
         ("admin","Admin"),
         ("lead","Lead"),
         ("manager","Manager"),
@@ -22,12 +22,16 @@ class organizationMembership(models.Model):
     organization=models.ForeignKey(organization,
                                    on_delete=models.CASCADE,
                                    related_name="organization_membership")
-    access=(
+    Access=(
         ("granted","Granted"),
+        ("under_review","Under_Review"),
         ("denied","Denied")
     )
     requested_at=models.DateTimeField(auto_now_add=True)
     approved_at=models.DateTimeField(null=True,blank=True)
+    
+    role=models.CharField(max_length=15,choices=Role,default="member")
+    access=models.CharField(max_length=15,choices=Access,default="under_review")
 
     class Meta:
         unique_together=("user","organization")
