@@ -3,6 +3,7 @@ import './Organization.css';
 import { useState,useEffect } from "react";
 import apiClient from "../../services/apiClient";
 import MemberCard from "../../components/MemberCard/MemberCard";
+import MemberRequestsModal from "./MemberRequestsModal/MemberRequestsModal";
 
 function OrganizationPage(){
     const [members,setMembers]=useState([]);
@@ -14,6 +15,7 @@ function OrganizationPage(){
         phone:"",
         created_at:""
     });
+    const [checkRequests,setCheckRequests]=useState(false);
 
 
     // get the organization details the user belongs to.
@@ -28,8 +30,9 @@ function OrganizationPage(){
 
     useEffect(()=>{
         const fetchMembers=async()=>{
-            const response=await apiClient.get('auth/users/myOrg/');
+            const response=await apiClient.get('org/org-memberships/');
             setMembers(response.data);
+            console.log(members);
         }
         fetchMembers();
     },[])
@@ -45,9 +48,13 @@ function OrganizationPage(){
     return(
     <>
     <NavigationBar/>
+    <MemberRequestsModal
+    isOpen={checkRequests}
+    onClose={()=>setCheckRequests(false)}
+    />
     <div className="organization-window">
         <div className="detail-window">
-            <h3 className="member-header">Organization</h3>
+            <h3 className="org-header">Organization</h3>
             <div className="detail">
                 <div className="item">
                     <span className="label">Name</span>
@@ -87,10 +94,16 @@ function OrganizationPage(){
             </div>}   
         </div>
         <div className="member-window">
-            <h3 className="member-header">Members</h3>
+            <div className="member-header">
+                <h3>Members</h3>
+                <button className="requests-btn" onClick={()=>setCheckRequests(true)}>requests</button>
+            </div>
+            {editable?<>
+            
+            </>:<></>}
             <div className="member-card-container">
                 {members.map((member)=>(
-                    <MemberCard member={member} key={member.id}/>)
+                    <MemberCard username={member.user} role={member.role} key={member.id}/>)
                 )}
             </div>
 

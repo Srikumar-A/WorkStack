@@ -170,7 +170,9 @@ export default function Teams() {
                 {members.map((member)=>(
                   <MemberCard
                   key={member.id}
-                  member={member}
+                  username={member.user.username}
+                  email={member.user.email}
+                  role={member.role}
                   onClick={
                     ()=>openEditMemberModal(member)
                   }/>

@@ -34,12 +34,42 @@
 }
 
 /* ===== Section Headers ===== */
+.org-header{
+ font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: white;
+  padding-bottom: 8px;
+  justify-content: center;
+}
 .member-header {
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 16px;
   color: white;
   padding-bottom: 8px;
+  display: flex;
+  justify-content: right;
+}
+.requests-btn{
+  margin-left: 35%;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+
+  background: #1f2937; /* dark slate */
+  color: #ffffff;
+
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
 /* ===== Organization Detail List ===== */
@@ -104,4 +134,10 @@
     width: 50%;
     margin-top: 4rem;
     margin-left: 5rem;
+}
+.member-card-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(10%,1fr));
+    gap:16px;
+    padding: 12px;
 }

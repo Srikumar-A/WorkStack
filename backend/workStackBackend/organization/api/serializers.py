@@ -44,5 +44,17 @@ class OrgMemUserRequestUpdateSerializer(serializers.ModelSerializer):
         read_only_fields=["user","organization"]
 
     def update(self,instance,validated_data):
-        previous_status=instance.status
-        new_status=validated_data.get("")
+        previous_status=instance.access
+        new_status=validated_data.get("access",previous_status)
+
+        #update it
+        instance=super().update(instance,validated_data)
+
+        if previous_status!="granted":
+            user=instance.user
+            user.organization=instance.organization
+            user.save(update_fields=["organization"])
+
+
+        return instance
+

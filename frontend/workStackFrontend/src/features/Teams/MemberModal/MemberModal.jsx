@@ -28,10 +28,9 @@ function MemberModal({
   }, [mode, member]);
   useEffect(()=>{
     const fetchUsersInFirm=async()=>{
-        if(teamId){
-            if(teamId.organization){
-        const response=await apiClient.get(`auth/users/${teamId.organization}/`);
-        setMembersInFirm(response.data);}}
+        const response=await apiClient.get(`org/org-memberships/`);
+        setMembersInFirm(response.data);
+        console.log(response.data)
     }
     fetchUsersInFirm();
   },[teamId])
@@ -81,7 +80,7 @@ function MemberModal({
           >
             <option value="">Select User</option>
             {membersInFirm.map(member=>(
-                <option key={member.id}  value={member.id}>{member.username}</option>
+                <option key={member.id}  value={member.id}>{member.user}</option>
             ))}
           </select>
         )}

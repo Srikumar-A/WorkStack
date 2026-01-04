@@ -4,7 +4,7 @@ from ..models import organization,organizationMembership
 from .serializers import (OrganizationSerializer,
                           OrganizationMembershipSerializer,
                           OrganizationMembershipRequestSerialzier,
-                          OrganizationUsersSerializer)
+                          OrganizationUsersSerializer,OrgMemUserRequestUpdateSerializer)
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -97,16 +97,6 @@ class OrgMembershipRequestsView(APIView):
         else:
             return Response({"message":"Access Revoked"},status=status.HTTP_403_FORBIDDEN)
         
-    def patch(self,request,id):
-        if isOrgAdmin(request.user):
-            membership=organizationMembership.objects.get(
-                id=id
-            )
-            serializer=OrganizationMembershipSerializer(membership,data=request.data,partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
-            return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
         
     def post(self,request):
         serializer=OrganizationMembershipRequestSerialzier(
@@ -116,3 +106,20 @@ class OrgMembershipRequestsView(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+
+class OrgMemRequestsManageView(APIView):
+    permission_classes=[IsAuthenticated,]
+    def patch(self,request,id):
+        if isOrgAdmin(request.user):
+            membership=organizationMembership.objects.get(
+                id=id
+            )
+            serializer=OrgMemUserRequestUpdateSerializer(membership,
+                                                         data=request.data,
+                                                         partial=True,
+                                                         context={'request':request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
+            return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)

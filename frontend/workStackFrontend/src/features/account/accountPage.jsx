@@ -9,8 +9,6 @@ function AccountPage(){
     const [loading, setLoading] = useState(true);
     const [editing,setEditing]=useState(false);
     const [formData,setFormData]=useState({
-        username:"",
-        email:"",
         organization:""
     });
 
@@ -27,8 +25,6 @@ function AccountPage(){
         const response = await apiClient.get("auth/user/");
         setUser(response.data);
         setFormData({
-            username: response.data.username,
-            email: response.data.email,
             organization: response.data.organization
         });
         if(!orgLoaded){
@@ -74,8 +70,7 @@ function AccountPage(){
     }
     const updateAccount=async()=>{
         try{
-            console.log(formData)
-            const response=await apiClient.patch("auth/user/",formData); 
+            const response=await apiClient.post("org/org-mem-req/",formData); 
             setUser(response.data);
             setEditing(false);
         }catch(err){
@@ -108,14 +103,7 @@ function AccountPage(){
       <h2 className="username">{user.username}</h2>
       
       <p className="email">
-        {editing ?(<>
-        <input
-        name="email"
-        type="text"
-        value={formData.email}
-        onChange={handleChange}
-        className='input-edit'/>
-        </>):(<>{user.email}</>)}
+        (<>{user.email}</>)
       </p>
     </div>
 
