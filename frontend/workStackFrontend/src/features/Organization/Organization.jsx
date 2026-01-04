@@ -16,6 +16,8 @@ function OrganizationPage(){
         created_at:""
     });
     const [checkRequests,setCheckRequests]=useState(false);
+    const [editable,setEditable]=useState(false);
+    const [permissions,setPermissions]=useState({});
 
 
     // get the organization details the user belongs to.
@@ -32,19 +34,37 @@ function OrganizationPage(){
         const fetchMembers=async()=>{
             const response=await apiClient.get('org/org-memberships/');
             setMembers(response.data);
-            console.log(members);
         }
         fetchMembers();
     },[])
+
+    useState(()=>{
+        const fetchUserPermission=async()=>{
+            const response=await apiClient.get('org/user-permission/');
+            setPermissions(response.data);
+            setEditable(response.data.role==="admin")
+        }
+        fetchUserPermission();
+    },[permissions])
+    const handleSave=async()=>{
+        const response=await apiClient.patch(`org/organizations/${permissions.organization}/`,org);
+        setEdit(false);
+    }
 
 
 
     //handle the editing in the lhs window
     const handleEdit=()=>{
-
         setEdit(true);
     }
-    const editable=true;
+    const handleChange = (e) => {
+    const { name, value } = e.target;  // get field name and value
+    setOrg((prevData) => ({
+      ...prevData,
+      [name]: value, // dynamically update the right field
+    }));
+  };
+   
     return(
     <>
     <NavigationBar/>
@@ -61,36 +81,36 @@ function OrganizationPage(){
                     {!(editable && edit)?
                     <span className="value">{org.name}</span>
                     :
-                    <input className="value" type="text" value={org.name} />}
+                    <input className="value" type="text" value={org.name} name="name" onChange={handleChange} />}
                 </div>
                 <div className="item">
                     <span className="label">Address</span>
                     {!(editable && edit)?
                     <span className="value">{org.address}</span>
                     :
-                    <input className="value" type="text" value={org.address}/>}
+                    <input className="value" type="text" value={org.address} name="address" onChange={handleChange}/>}
                 </div>
                 <div className="item">
                     <span className="label">Email</span>
                     {!(editable && edit)?
                     <span className="value">{org.email}</span>
                     :
-                    <input className="value" type="email" value={org.email}/>}
+                    <input className="value" type="email" value={org.email} name="email" onChange={handleChange}/>}
                 </div>
                 <div className="item">
                     <span className="label">Phone</span>
                     {!(editable && edit)?
                     <span className="value">{org.phone}</span>
                     :
-                    <input className="value" type="text" value={org.phone}/>}
+                    <input className="value" type="text" value={org.phone} name="phone" onChange={handleChange}/>}
                 </div>
             </div>
             {editable && !edit?
             <button className="edit-btn" onClick={()=>handleEdit()}>Edit</button>
             :
             <div className="footer-btns">
-                <button className="primary-btn">Save</button>
-                <button className="secondary-btn">Cancel</button>
+                <button className="primary-btn" onClick={handleSave}>Save</button>
+                <button className="secondary-btn" onClick={()=>{setEdit(false)}}>Cancel</button>
             </div>}   
         </div>
         <div className="member-window">

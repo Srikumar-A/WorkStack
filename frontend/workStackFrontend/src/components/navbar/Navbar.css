@@ -1,0 +1,18 @@
+.logout-btn {
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* Hover effect */
+.logout-btn:hover {
+  background-color: rgba(220, 53, 69, 0.9);
+  border-color: rgba(220, 53, 69, 1);
+  color: #fff;
+}
+
+/* Remove default focus ring ugliness */
+.logout-btn:focus {
+  box-shadow: none;
+}

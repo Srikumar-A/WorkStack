@@ -37,6 +37,7 @@ function Dashboard(){
             console.log(err);
         }
     }
+  
     fetchProject();
     fetchQuests();
     fetchQuestAssigned();

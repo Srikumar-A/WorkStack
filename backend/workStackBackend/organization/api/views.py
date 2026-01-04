@@ -30,9 +30,9 @@ class OrganizationDetailView(APIView):
         org=organization.objects.get(pk=pk)
         serializer=OrganizationSerializer(org)
         return Response(serializer.data,status=status.HTTP_200_OK)
-    def put(self,request,pk):
+    def patch(self,request,pk):
         org=organization.objects.get(pk=pk)
-        serializer=OrganizationSerializer(org,data=request.data)
+        serializer=OrganizationSerializer(org,data=request.data,partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
@@ -123,3 +123,13 @@ class OrgMemRequestsManageView(APIView):
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
             return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+        
+class UserOrgRoleView(APIView):
+    permission_classes=[IsAuthenticated,]
+
+    def get(self,request):
+        user_membership=organizationMembership.objects.get(
+            user=request.user.id
+        )
+        serializer=OrganizationMembershipSerializer(user_membership)
+        return Response(serializer.data,status=status.HTTP_200_OK)

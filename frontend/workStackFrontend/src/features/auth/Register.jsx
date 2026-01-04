@@ -18,7 +18,7 @@ function Register(){
         e.preventDefault()
         try{
             //api call
-            await apiClient.post('/auth/register/',form);
+            await apiClient.post('auth/register/',form);
             navigate('/login');
         }catch(err){
             console.log(err);

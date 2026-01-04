@@ -155,7 +155,6 @@ function Projects(){
                             <label>End date</label>
                             <input
                             type="date"
-                            defaultValue={selectedProject.end_date}
                             value={formData.end_date}
                             onChange={handleChange}
                             />
