@@ -177,7 +177,7 @@ WorkStack/
    npm run dev
    ```
 
-   The frontend will be available at `http://localhost:5173` (default Vite port)
+   The frontend will be available at `http://localhost:5173` - to be deployed soon.
 
 ## 📦 Dependencies
 
@@ -254,10 +254,10 @@ The backend exposes RESTful APIs for each app:
 - ✅ Gantt chart visualization
 - ✅ Dashboard overview
 - ✅ Member invitation and requests
-- ✅ PWA support (progressive web app)
 
 ## 🛣️ Roadmap (Potential)
 
+- [ ] Messaging channels for teams and projects
 - [ ] Real-time collaboration features
 - [ ] Advanced reporting and analytics
 - [ ] File attachments to quests
@@ -268,16 +268,13 @@ The backend exposes RESTful APIs for each app:
 
 ## 📝 License
 
-[Add your license here]
+None
 
 ## 👥 Contributors
 
-[Add contributor information here]
 
-## 📞 Contact & Support
 
-[Add contact information here]
+##  Contact & Support
+arivlagansrikumar@gmail.com
 
 ---
-
-**Note**: This is a rough README generated from project structure analysis. Please review and update with specific details about project goals, contribution guidelines, deployment instructions, and any other project-specific information.
