@@ -1,1 +1,1 @@
-web: gunicorn workstackbackend.wsgi --chdir backend/workstackbackend
+web: gunicorn workStackBackend.wsgi:application
