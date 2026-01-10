@@ -1,8 +1,9 @@
 .login-container{
     min-height:100vh;
+    min-width: 100vw;
     display:flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    background-color: #121212;
 }
 
 .form-card{
@@ -14,6 +15,7 @@
     display: flex;
     flex-direction: column;
     gap:1.5rem;
+    background-color: #282828;
 }
 .form-title{
     font-size:1.25rem;
@@ -30,4 +32,13 @@ input{
     font-size:1rem;
     border:1px solid #ccc;
     border-radius:5px;
+}
+.submit-btn{
+    margin-top: 5px;
+    margin-left: 8.2rem;
+    padding: 0.4rem;
+    border-radius: 0.6rem;
+    background-color: #2563eb;
+    color: white;
+    width: 5rem;
 }

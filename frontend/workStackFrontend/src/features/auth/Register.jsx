@@ -72,7 +72,7 @@ function Register(){
             value={form.password2}
             onChange={handleChange}
             />
-            <button type="submit" onClick={handleSubmit}>Register</button>
+            <button className="submit-btn" type="submit" onClick={handleSubmit}>Register</button>
 
         </form>
 

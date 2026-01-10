@@ -50,7 +50,8 @@ function Login(){
                 value={form.password}
                 onChange={handleChange}
                 />
-                <button type="submit" onClick={handleSubmit}>Login</button>
+                <button className='submit-btn' type="submit" onClick={handleSubmit}>Login</button>
+                <a href="/register">New to the site? register first.</a>
             </form>
         </div>
     );
