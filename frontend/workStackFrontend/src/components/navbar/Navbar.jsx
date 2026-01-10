@@ -13,7 +13,7 @@ function NavigationBar(){
     return(
         <>
         <Navbar bg="primary" fixed="top" variant="dark">
-        <Container>
+        <Container fluid>
             <Navbar.Brand href="/Dashboard">WorkStack</Navbar.Brand>
 
             <Nav className="me-auto">

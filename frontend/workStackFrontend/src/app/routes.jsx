@@ -7,10 +7,12 @@ import Projects from '../features/Projects/Projects.jsx';
 import Quests from '../features/Quests/Quests.jsx';
 import Teams from '../features/Teams/Teams.jsx';
 import OrganizationPage from '../features/Organization/Organization.jsx';
+import Home from '../pages/Home/Home.jsx';
 
 function AppRoutes(){
     return(
         <Routes>
+            <Route path='/' element={<Home/>}/>
             <Route path='/register' element={<Register/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/Dashboard" element={<Dashboard/>}/>
