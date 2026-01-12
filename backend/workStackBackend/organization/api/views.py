@@ -61,7 +61,11 @@ only 3 api calls needed:
 '''
 
 def isOrgAdmin(user):
-    return True
+    return organizationMembership.objects.filter(
+        user=user.id,
+        access='granted',
+        role='admin'
+    ).exists()
 '''
 organizationMembership.objects.filter(
         user=user.id,
@@ -72,15 +76,13 @@ class OrganizationMembershipView(APIView):
     permission_classes=[IsAuthenticated,]
 
     def get(self,request):
-        if isOrgAdmin(request.user):
-            memberships=organizationMembership.objects.filter(
-                organization=request.user.organization,
-                access="granted"
+        memberships=organizationMembership.objects.filter(
+            organization=request.user.organization,
+            access="granted"
             )
-            serializer=OrganizationUsersSerializer(memberships,many=True)
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        else:
-            return Response({"message":"Access Revoked"},status=status.HTTP_403_FORBIDDEN)
+        serializer=OrganizationUsersSerializer(memberships,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    
         
     
 class OrgMembershipRequestsView(APIView):
@@ -123,6 +125,15 @@ class OrgMemRequestsManageView(APIView):
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
             return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+        
+    def get(self,request,id):
+         if isOrgAdmin(request.user):
+            membership=organizationMembership.objects.get(
+                id=id
+            )
+            serializer=OrgMemUserRequestUpdateSerializer(membership)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+         return Response({"message":"Forbidden, access revoked"},status=status.HTTP_403_FORBIDDEN)
         
 class UserOrgRoleView(APIView):
     permission_classes=[IsAuthenticated,]

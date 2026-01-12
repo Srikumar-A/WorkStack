@@ -60,14 +60,21 @@ export default function Teams() {
     });
   };
   const CreateTeam=async()=>{
-    console.log(selectedTeam.team_name);
     const response=await apiClient.post("teams/",{team_name:selectedTeam.team_name});
+  }
+  // update the name of the team
+  const EditTeam =async()=>{
+    const payload={
+      team_name:selectedTeam.team_name
+    }
+    const response=await apiClient.patch("teams/"+String(selectedTeam.id)+'/',payload);
   }
 
   const handleSave = () => {
     if (selectedTeam.id) {
       // UPDATE
       setTeams(teams.map(t => t.id === selectedTeam.id ? selectedTeam : t));
+      EditTeam();
     } else {
       // CREATE
       CreateTeam();
