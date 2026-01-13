@@ -10,6 +10,7 @@ export default function Quests() {
   const [search, setSearch] = useState("");
   const [selectedQuest, setSelectedQuest] = useState(null);
   const [editing, setEditing] = useState(false);
+  const [members,setMembers]=useState([]);
 
   /* Mock data – replace with API */
   useEffect(() => {
@@ -19,6 +20,13 @@ export default function Quests() {
     }
     fetchQuests();
   }, []);
+  useEffect(()=>{
+    const fetchMembers=async()=>{
+      const response=await apiClient.get('org/org-memberships/');
+      setMembers(response.data);
+    }
+    fetchMembers();
+  },[])
 
   const filteredQuests = quests.filter(q =>
     q.title.toLowerCase().includes(search.toLowerCase())
@@ -37,6 +45,7 @@ export default function Quests() {
       status: "pending",
       start_date: "",
       deadline: "",
+      assigned_to:""
     });
     setEditing(true);
   };
@@ -181,6 +190,18 @@ export default function Quests() {
                 <option value="in_progress">In Progress</option>
                 <option value="completed">Completed</option>
               </select>
+              <label>Assigned To</label>
+              <select
+                name="assigned_to"
+                value={selectedQuest.assigned_to}
+                onChange={handleChange}
+                disabled={!editing}
+                >
+                  <option value="">Select Member</option>
+                  {members.map(member=>(
+                    <option key={member.id} value={member.id}>{member.user}</option>
+                  ))}
+                </select>
             </div>
 
             {editing && (

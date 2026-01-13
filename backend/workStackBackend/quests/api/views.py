@@ -33,7 +33,14 @@ class QuestView(APIView):
                             created_by=request.user)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-    
+'''
+Helper functions for identification of user- user access
+'''    
+def is_user_assignee(user,quest):
+    return quest.created_by==user
+
+def is_user_responsible(user,quest):
+    return quest.assigned_to==user 
 
 class QuestDetailView(APIView):
     def get(self,request,pk):
@@ -42,11 +49,14 @@ class QuestDetailView(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
     def patch(self,request,pk):
         quests=Quest.objects.get(pk=pk)
-        serializer=QuestSerializer(quests,data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        if is_user_assignee(request.user,quests) or is_user_responsible(request.user,quests):
+            serializer=QuestSerializer(quests,data=request.data,partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message":"Access revoked, you dont have access"},
+                        status=status.HTTP_403_FORBIDDEN)
     def delete(self,request,pk):
         quest=Quest.objects.get(pk=pk)
         quest.delete()
