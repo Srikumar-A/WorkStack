@@ -20,12 +20,12 @@ function Projects(){
     });
     const [teams,setTeams]=useState([]);
     const [showCreateModal,setShowCreateModal]=useState(false);
+    const [editable,setEditable]=useState(false);
 
     useEffect(()=>{
         const fetchProjects=async ()=>{
             const response=await apiClient.get("projects/list/");
             setProjects(response.data);
-            //setFormData(response.data);
         }
       fetchProjects();
       },[])
@@ -49,11 +49,14 @@ function Projects(){
         );
 
     useEffect(()=>{
-      if(selectedProject){
-        setFormData(selectedProject);
+      const func=()=>{
+        if(selectedProject && !editable){
+          setFormData(selectedProject);
+        }
       }
-
-    },[selectedProject])
+      func();
+    
+    },[editable,selectedProject])
 
     const ganttTasks=quests.map(mapQuestToGanttTask).filter(Boolean);
     const pendingQuests=quests.filter(quest=>quest.status==="pending").length;
@@ -65,13 +68,14 @@ function Projects(){
         const response=await apiClient.patch("/projects/"+String(selectedProject.id)+"/",formData);
     }
     const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        setFormData(prev => ({
-                            ...prev,
-                            [name]: value
-                    }));
-        };
+    setFormData({
+      ...selectedProject,
+      [e.target.name]: e.target.value
+    });
+  };
+    const toggleEdit=(e)=>{
+      setEditable(!editable);
+    }
 
     
     
@@ -138,25 +142,31 @@ function Projects(){
                         <label>Description</label>
                         <textarea
                         rows="2"
+                        name="description"
                         value={formData.description}
                         onChange={handleChange}
+                        disabled={!editable}
                         />
                     </div>
                     <div className="form-row">
                         <div className="form-group">
                             <label>Start date</label>
                             <input
+                            name="start_date"
                             type="date"
                             value={formData.start_date}
                             onChange={handleChange}
+                            disabled={!editable}
                             />
                         </div>
                         <div className="form-group">
                             <label>End date</label>
                             <input
+                            name="end_date"
                             type="date"
                             value={formData.end_date}
                             onChange={handleChange}
+                            disabled={!editable}
                             />
                         </div>
                     </div>
@@ -165,7 +175,10 @@ function Projects(){
                             Team
                         </label>
                         <select 
+                        name="team"
                         value={formData.team}
+                        disabled={!editable}
+                        onChange={handleChange}
                         ><option value={0} key={0}>NA</option>
                             {teams.map(team=>(<option value={team.id} key={team.id}>{team.team_name}</option>))}
                         </select>
@@ -173,8 +186,12 @@ function Projects(){
                     
               </div>
               <footer className="project-actions">
+                {editable?<>
                 <button className="btn-primary" onClick={saveFunction}>Save</button>
-                <button className="btn-secondary">Cancel</button>
+                <button className="btn-secondary" onClick={toggleEdit}>Cancel</button></>
+              :
+              <><button className="btn-primary" onClick={toggleEdit}>Edit</button></>}
+                
               </footer>
             </section>
           </>
