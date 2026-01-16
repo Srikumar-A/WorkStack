@@ -21,7 +21,9 @@ function Projects(){
     const [teams,setTeams]=useState([]);
     const [showCreateModal,setShowCreateModal]=useState(false);
     const [editable,setEditable]=useState(false);
+    const [access, setAccess]=useState(false);
 
+    // retrieve project list
     useEffect(()=>{
         const fetchProjects=async ()=>{
             const response=await apiClient.get("projects/list/");
@@ -29,6 +31,8 @@ function Projects(){
         }
       fetchProjects();
       },[])
+    
+    //get query for the selected project  
     useEffect(()=>{
         const fetchQuests=async ()=>{
             if(id){
@@ -38,16 +42,32 @@ function Projects(){
       fetchQuests();
       },[id])
     useEffect(()=>{
+      const fetchUserPerms=async()=>{
+        if(id){
+          const response=await apiClient.get("projects/permissions/"+String(id)+"/");
+          setAccess(response.data["access"]);
+          console.log(response.data);
+        }
+      }
+      fetchUserPerms();
+    },[id])  
+
+
+    //get the teams available in the organization  
+    useEffect(()=>{
         const fetchUserTeam=async()=>{
             const response1=await apiClient.get("teams/org/");
             setTeams(response1.data);
         }
         fetchUserTeam();
     },[])
+    
+
+
     const selectedProject = projects.find(
         (p) => String(p.id) === String(id)
         );
-
+    //setting the state of the selected project and form to display the selected project.    
     useEffect(()=>{
       const func=()=>{
         if(selectedProject && !editable){
@@ -66,6 +86,11 @@ function Projects(){
     // save the project details in the backend
     const saveFunction=async()=>{
         const response=await apiClient.patch("/projects/"+String(selectedProject.id)+"/",formData);
+        setEditable(!editable);
+    }
+    const delFunction=async()=>{
+      const response=await apiClient.delete("/projects/"+String(selectedProject.id)+"/");
+      setFormData();
     }
     const handleChange = (e) => {
     setFormData({
@@ -119,7 +144,21 @@ function Projects(){
           </div>
         ) : (
           <>
-            <h2>{selectedProject.name}   {selectedProject.status}</h2>
+            <div className="project-header">
+                <div className="project-header-left">
+                    <h2 className="project-title">{selectedProject.name}</h2>
+                    <span className={`project-status ${selectedProject.status}`}>
+                        {selectedProject.status}
+                    </span>
+                 </div>
+
+                <div className="project-header-actions">
+                <button className="btn-danger" onClick={delFunction}>
+                    Delete
+                </button>
+                </div>
+              </div>
+
 
             <section className="gantt-wrapper">
                 <GanttChart tasks={ganttTasks}/>
@@ -185,14 +224,18 @@ function Projects(){
                     </div>
                     
               </div>
-              <footer className="project-actions">
-                {editable?<>
-                <button className="btn-primary" onClick={saveFunction}>Save</button>
-                <button className="btn-secondary" onClick={toggleEdit}>Cancel</button></>
-              :
-              <><button className="btn-primary" onClick={toggleEdit}>Edit</button></>}
+              {access?
+                <footer className="project-actions">
+                  {editable?<>
+                    <button className="btn-primary" onClick={saveFunction}>Save</button>
+                    <button className="btn-secondary" onClick={toggleEdit}>Cancel</button></>
+                    :
+                    <><button className="btn-primary" onClick={toggleEdit}>Edit</button></>}
                 
-              </footer>
+                    </footer>
+                    :
+                    <></>
+              }
             </section>
           </>
         )}

@@ -116,6 +116,60 @@
 
 
 /*project details editable form section*/
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.project-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.project-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.project-status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* Status colors */
+.project-status.active {
+  background: #e6f4ea;
+  color: #137333;
+}
+
+.project-status.completed {
+  background: #e8f0fe;
+  color: #1a73e8;
+}
+
+.project-status.pending {
+  background: #fef7e0;
+  color: #b06000;
+}
+
+/* Danger button */
+.btn-danger {
+  background: #d93025;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/*Project data*/
 .edit-btn {
   background: transparent;
   border: 1px solid #334155;
